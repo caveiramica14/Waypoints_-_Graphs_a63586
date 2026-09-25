@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Graph
@@ -41,6 +40,7 @@ public class Graph
 
     public bool AStar(GameObject startId, GameObject endId)
     {
+        pathList.Clear();
         Node start = FindNode(startId);
         Node end = FindNode(endId);
         
@@ -96,7 +96,7 @@ public class Graph
                 {
                     neighbour.cameFrom = thisNode;
                     neighbour.g = tentative_g_score;
-                    neighbour.h = distance(thisNode, end);
+                    neighbour.h = distance(neighbour, end);
                     neighbour.f = neighbour.g + neighbour.h;
                 }
             }
@@ -126,20 +126,16 @@ public class Graph
 
     int lowestF(List<Node> l)
     {
-        float lowestf = 0;
-        int count = 0;
+        float lowestf = l[0].f;
         int iteratorCount = 0;
-
-        lowestf = l[0].f;
 
         for(int i = 1; i < l.Count; i++)
         {
             if(l[i].f <= lowestf)
             {
                 lowestf= l[i].f;
-                iteratorCount = count;
+                iteratorCount = i;
             }
-            count++;
         }
         return iteratorCount;
     }
